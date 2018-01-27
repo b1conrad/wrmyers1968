@@ -1,11 +1,12 @@
 ruleset com.bruceatbyu.graduands_collection {
   meta {
-    shares __testing, import
+    shares __testing, import, graduands
   }
   global {
     __testing = {
       "queries": [ { "name": "__testing" }
                  , { "name": "import", "args": [ "url" ] }
+                 , { "name": "graduands" }
                  ]
     ,
       "events": [ { "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
@@ -28,6 +29,9 @@ ruleset com.bruceatbyu.graduands_collection {
         .tail()
         .filter(function(s){s})
         .map(function(s){graduand_map(s)})
+    }
+    graduands = function() {
+      ent:graduands
     }
   }
   rule intialization {
