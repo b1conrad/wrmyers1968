@@ -56,7 +56,7 @@ ruleset com.bruceatbyu.graduands_collection {
     select when graduands_collection csv_available
     foreach import(event:attr("url")) setting(map)
     pre {
-      key = map{"id"}.as("String");
+      key = "g" + (map{"id"}.as("String"));
     }
     fired {
       ent:graduands{key} := map;
