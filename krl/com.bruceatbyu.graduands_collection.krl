@@ -17,11 +17,11 @@ ruleset com.bruceatbyu.graduands_collection {
       hf.replace(re#^"#,"").replace(re#"$#,"").split(re#, #)
     }
     graduand_map = function(line) {
-      parts = line.extract(re#^([\w ]+),(\w+),(\d+),(.*)$#);
+      parts = line.extract(re#^([\w ]+),(\w+),(\d+),(\d+),(.*)$#);
       { "fn": parts[0],
         "ln": parts[1],
-        "pg": parts[2].as("Number"),
-        "hf": parts[3] => hall_of_fame(parts[3]) | null
+        "id": parts[2].as("Number")*10 + parts[3].as("Number"),
+        "hf": parts[4] => hall_of_fame(parts[4]) | null
       }.filter(function(v,k){v})
     }
     import = function(url) {
@@ -36,7 +36,7 @@ ruleset com.bruceatbyu.graduands_collection {
     }
     pageCounts = function() {
       ent:graduands.values()
-                   .collect(function(v){v{"pg"}})
+                   .collect(function(v){math:int(v{"id"}/10)})
                    .map(function(v,k){v.length()})
     }
   }
