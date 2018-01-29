@@ -1,12 +1,12 @@
 ruleset com.bruceatbyu.graduands_collection {
   meta {
-    shares __testing, import, graduands, pageCounts
+    shares __testing, import, graduands_page, pageCounts
   }
   global {
     __testing = {
       "queries": [ { "name": "__testing" }
                  , { "name": "import", "args": [ "url" ] }
-                 , { "name": "graduands" }
+                 , { "name": "graduands_page" }
                  , { "name": "pageCounts" }
                  ]
     ,
@@ -31,8 +31,32 @@ ruleset com.bruceatbyu.graduands_collection {
         .filter(function(s){s})
         .map(function(s){graduand_map(s)})
     }
-    graduands = function() {
-      ent:graduands
+    grad_option = function(grad) {
+      <<    <option value="g#{grad{"id"}}">#{grad{"fn"}} #{grad{"ln"}}</option>
+>>
+    }
+    grad_select = function() {
+      <<  <select name="grad">
+#{ent:graduands.map(function(g){grad_option(g)}).join("")}  </select>
+>>
+    }
+    grad_form = function() {
+      <<<form action="grad_page.html">
+#{grad_select()}  <input type="submit" value="grad">
+</form>
+>>
+    }
+    graduands_page = function() {
+      <<<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>W. R. Myers 1968 Graduands</title>
+</head>
+<body>
+#{grad_form()}</body>
+</html>
+>>
     }
     pageCounts = function() {
       math_int = function(num) {
