@@ -1,6 +1,6 @@
 ruleset com.bruceatbyu.graduands_collection {
   meta {
-    shares __testing, import, graduands_page, pageCounts
+    shares __testing, import, graduands_page, grad_page, pageCounts
   }
   global {
     __testing = {
@@ -55,6 +55,23 @@ ruleset com.bruceatbyu.graduands_collection {
 </head>
 <body>
 #{grad_form()}</body>
+</html>
+>>
+    }
+    grad_page = function(grad) {
+      map = ent:graduands{grad};
+      name = <<#{map{"fn"}} #{map{"ln"}}>>;
+      raw = "https://raw.githubusercontent.com/b1conrad/wrmyers1968/master/images";
+      <<<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>#{name}</title>
+</head>
+<body>
+<h1>#{name}</h1>
+<img src="#{raw}/#{map{"id"}}.png">
+</body>
 </html>
 >>
     }
