@@ -1,12 +1,13 @@
 ruleset com.bruceatbyu.graduands_collection {
   meta {
-    shares __testing, import, graduands
+    shares __testing, import, graduands, pageCounts
   }
   global {
     __testing = {
       "queries": [ { "name": "__testing" }
                  , { "name": "import", "args": [ "url" ] }
                  , { "name": "graduands" }
+                 , { "name": "pageCounts" }
                  ]
     ,
       "events": [ { "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
@@ -32,6 +33,9 @@ ruleset com.bruceatbyu.graduands_collection {
     }
     graduands = function() {
       ent:graduands
+    }
+    pageCounts = function() {
+      ent:graduands.values().collect(function(v){v{"pg"}})
     }
   }
   rule intialization {
