@@ -35,7 +35,9 @@ ruleset com.bruceatbyu.graduands_collection {
       ent:graduands
     }
     pageCounts = function() {
-      ent:graduands.values().collect(function(v){v{"pg"}})
+      ent:graduands.values()
+                   .collect(function(v){v{"pg"}})
+                   .map(function(v,k){v.length()})
     }
   }
   rule intialization {
