@@ -37,7 +37,7 @@ ruleset com.bruceatbyu.graduands_collection {
     }
     grad_select = function() {
       <<  <select name="grad">
-#{ent:graduands.map(function(g){grad_option(g)}).join("")}  </select>
+#{ent:graduands.values().map(function(g){grad_option(g)}).join("")}  </select>
 >>
     }
     grad_form = function() {
