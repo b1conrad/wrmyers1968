@@ -35,8 +35,13 @@ ruleset com.bruceatbyu.graduands_collection {
       ent:graduands
     }
     pageCounts = function() {
+      math_int = function(num) {
+        val = num.as("String");
+        dec = val.match(re#[.]#);
+        dec => val.extract(re#(\d*)[.]\d*#)[0].as("Number") | num;
+      };
       ent:graduands.values()
-                   .collect(function(v){math:int(v{"id"}/10)})
+                   .collect(function(v){math_int(v{"id"}/10)})
                    .map(function(v,k){v.length()})
     }
   }
