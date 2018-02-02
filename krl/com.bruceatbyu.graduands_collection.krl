@@ -14,7 +14,7 @@ ruleset com.bruceatbyu.graduands_collection {
                 ]
     }
     hall_of_fame = function(hf) {
-      hf.replace(re#^"#g,"").split(re#, #)
+      hf.replace(re#"#g,"").split(re#, #)
     }
     graduand_map = function(line) {
       parts = line.extract(re#^([\w ]+),(\w+),(\d+),(\d+),(.*)$#);
