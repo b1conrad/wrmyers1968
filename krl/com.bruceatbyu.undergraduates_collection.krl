@@ -97,7 +97,7 @@ ruleset com.bruceatbyu.undergraduates_collection {
     pre {
       row = map{"id"};
       num_on_row = row == ent:last_row => ent:last_num_on_row + 1 | 1;
-      key = "p" + row + num_on_row;
+      key = "u" + row + num_on_row;
     }
     fired {
       ent:undergraduates{key} := map;
