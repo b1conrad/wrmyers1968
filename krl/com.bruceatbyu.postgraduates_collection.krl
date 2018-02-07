@@ -71,12 +71,12 @@ ruleset com.bruceatbyu.postgraduates_collection {
 </html>
 >>
     }
+  math_int = function(num) {
+    val = num.as("String");
+    dec = val.match(re#[.]#);
+    dec => val.extract(re#(\d*)[.]\d*#)[0].as("Number") | num;
+  };
     pageCounts = function() {
-      math_int = function(num) {
-        val = num.as("String");
-        dec = val.match(re#[.]#);
-        dec => val.extract(re#(\d*)[.]\d*#)[0].as("Number") | num;
-      };
       ent:postgraduates.values()
                        .collect(function(v){math_int(v{"id"}/10)})
                        .map(function(v,k){v.length()})
@@ -87,16 +87,26 @@ ruleset com.bruceatbyu.postgraduates_collection {
     if not ent:postgraduates then noop();
     fired {
       ent:postgraduates := {};
+      ent:latest_page := 0;
+      ent:latest_num := 0;
     }
   }
   rule import_postgraduates_collection {
     select when postgraduates_collection csv_available
     foreach import(event:attr("url")) setting(map)
     pre {
-      key = "p" + (map{"id"}.as("String"));
+      id = map{"id"};
+      page = math_int(id/10);
+      num_on_row = page == ent:latest_page => ent:latest_num + 1 | 1;
+      num = id*10 + num_on_row;
+      key = "p" + (num.as("String"));
     }
     fired {
       ent:postgraduates{key} := map;
+      ent:latest_page := page;
+      ent:latest_page := 0 on final;
+      ent:latest_num := num;
+      ent:latest_num := 0 on final;
     }
   }
 }
