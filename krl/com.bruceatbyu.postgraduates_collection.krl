@@ -1,13 +1,13 @@
 ruleset com.bruceatbyu.postgraduates_collection {
   meta {
-    shares __testing, import, postgraduates_page, postgrad_page, pageCounts
+    shares __testing, import, postgraduates_page, postgrad_page, rowCounts
   }
   global {
     __testing = {
       "queries": [ { "name": "__testing" }
                  , { "name": "import", "args": [ "url" ] }
                  , { "name": "postgraduates_page" }
-                 , { "name": "pageCounts" }
+                 , { "name": "rowCounts" }
                  ]
     ,
       "events": [ { "domain": "postgraduates_collection", "type": "csv_available", "attrs": [ "url" ] }
@@ -76,9 +76,9 @@ ruleset com.bruceatbyu.postgraduates_collection {
       dec = val.match(re#[.]#);
       dec => val.extract(re#(\d*)[.]\d*#)[0].as("Number") | num;
     };
-    pageCounts = function() {
+    rowCounts = function() {
       ent:postgraduates.values()
-                       .collect(function(v){math_int(v{"id"}/10)})
+                       .collect(function(v){v{"id"}})
                        .map(function(v,k){v.length()})
     }
   }
