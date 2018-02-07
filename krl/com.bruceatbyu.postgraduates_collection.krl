@@ -27,13 +27,13 @@ ruleset com.bruceatbyu.postgraduates_collection {
         .filter(function(s){s})
         .map(function(s){postgraduate_map(s)})
     }
-    postgrad_option = function(postgrad) {
-      <<    <option value="p#{postgrad{"id"}}">#{postgrad{"fn"}} #{postgrad{"ln"}}</option>
+    postgrad_option = function(postgrad,key) {
+      <<    <option value="#{key}">#{postgrad{"fn"}} #{postgrad{"ln"}}</option>
 >>
     }
     postgrad_select = function() {
       <<  <select name="postgrad">
-#{ent:postgraduates.values().map(function(g){postgrad_option(g)}).join("")}  </select>
+#{ent:postgraduates.map(function(g,k){postgrad_option(g,k)}).values().join("")}  </select>
 >>
     }
     postgrad_form = function() {
@@ -55,7 +55,7 @@ ruleset com.bruceatbyu.postgraduates_collection {
 >>
     }
     postgrad_page = function(postgrad) {
-      map = ent:graduands{postgrad};
+      map = ent:postgraduates{postgrad};
       name = <<#{map{"fn"}} #{map{"ln"}}>>;
       raw = "https://raw.githubusercontent.com/b1conrad/wrmyers1968/master/images";
       <<<!DOCTYPE html>
@@ -71,11 +71,11 @@ ruleset com.bruceatbyu.postgraduates_collection {
 </html>
 >>
     }
-  math_int = function(num) {
-    val = num.as("String");
-    dec = val.match(re#[.]#);
-    dec => val.extract(re#(\d*)[.]\d*#)[0].as("Number") | num;
-  };
+    math_int = function(num) {
+      val = num.as("String");
+      dec = val.match(re#[.]#);
+      dec => val.extract(re#(\d*)[.]\d*#)[0].as("Number") | num;
+    };
     pageCounts = function() {
       ent:postgraduates.values()
                        .collect(function(v){math_int(v{"id"}/10)})
@@ -87,7 +87,7 @@ ruleset com.bruceatbyu.postgraduates_collection {
     if not ent:postgraduates then noop();
     fired {
       ent:postgraduates := {};
-      ent:last_page := 0;
+      ent:last_row := 0;
       ent:last_num_on_row := 0;
     }
   }
@@ -95,15 +95,14 @@ ruleset com.bruceatbyu.postgraduates_collection {
     select when postgraduates_collection csv_available
     foreach import(event:attr("url")) setting(map)
     pre {
-      id = map{"id"};
-      page = math_int(id/10);
-      num_on_row = page == ent:last_page => ent:last_num_on_row + 1 | 1;
-      key = "p" + page + (id*10 + num_on_row);
+      row = map{"id"};
+      num_on_row = row == ent:last_row => ent:last_num_on_row + 1 | 1;
+      key = "p" + row + num_on_row;
     }
     fired {
       ent:postgraduates{key} := map;
-      ent:last_page := page;
-      ent:last_page := 0 on final;
+      ent:last_row := row;
+      ent:last_row := 0 on final;
       ent:last_num_on_row := num_on_row;
       ent:last_num_on_row := 0 on final;
     }
