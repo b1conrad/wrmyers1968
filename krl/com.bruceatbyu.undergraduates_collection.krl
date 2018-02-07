@@ -14,7 +14,7 @@ ruleset com.bruceatbyu.undergraduates_collection {
                 ]
     }
     undergraduate_map = function(line) {
-      parts = line.extract(re#^([\w ]+),([\w ]+),(\d+),(\d+)$#);
+      parts = line.extract(re#^([\w ]+),([\w ']+),(\d+),(\d+)$#);
       { "fn": parts[0],
         "ln": parts[1],
         "id": parts[2].as("Number")*10 + parts[3].as("Number")
