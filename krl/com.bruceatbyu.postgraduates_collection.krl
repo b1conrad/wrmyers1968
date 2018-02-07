@@ -87,8 +87,8 @@ ruleset com.bruceatbyu.postgraduates_collection {
     if not ent:postgraduates then noop();
     fired {
       ent:postgraduates := {};
-      ent:latest_page := 0;
-      ent:latest_num := 0;
+      ent:last_page := 0;
+      ent:last_num_on_row := 0;
     }
   }
   rule import_postgraduates_collection {
@@ -97,16 +97,15 @@ ruleset com.bruceatbyu.postgraduates_collection {
     pre {
       id = map{"id"};
       page = math_int(id/10);
-      num_on_row = page == ent:latest_page => ent:latest_num + 1 | 1;
-      num = id*10 + num_on_row;
-      key = "p" + (num.as("String"));
+      num_on_row = page == ent:last_page => ent:last_num_on_row + 1 | 1;
+      key = "p" + page + (id*10 + num_on_row);
     }
     fired {
       ent:postgraduates{key} := map;
-      ent:latest_page := page;
-      ent:latest_page := 0 on final;
-      ent:latest_num := num;
-      ent:latest_num := 0 on final;
+      ent:last_page := page;
+      ent:last_page := 0 on final;
+      ent:last_num_on_row := num_on_row;
+      ent:last_num_on_row := 0 on final;
     }
   }
 }
