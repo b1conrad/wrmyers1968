@@ -1,2 +1,2 @@
 # wrmyers1968
-graduands of W. R. Myers in 1968
+W. R. Myers class of '68
