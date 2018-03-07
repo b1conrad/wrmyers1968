@@ -54,7 +54,9 @@ ruleset com.bruceatbyu.postgraduates_collection {
 </html>
 >>
     }
+    ordinals = [ "Zeroeth", "First", "Second", "Third", "Fourth" ];
     postgrad_page = function(postgrad) {
+      pos = ordinals[postgrad.substr(4).as("Number")];
       map = ent:postgraduates{postgrad};
       name = <<#{map{"fn"}} #{map{"ln"}}>>;
       raw = "https://raw.githubusercontent.com/b1conrad/wrmyers1968/master/images";
@@ -66,6 +68,7 @@ ruleset com.bruceatbyu.postgraduates_collection {
 </head>
 <body>
 <h1>#{name}</h1>
+<p>#{pos} picture</p>
 <img src="#{raw}/#{map{"id"}}.png">
 </body>
 </html>
