@@ -4,5 +4,8 @@ RewriteCond "%{HTTP_HOST}" "wrmyers68.com$" [NC]
 
 RewriteRule "^$" "/wrmyers68/index.html" [NC,L]
 RewriteRule "^68.png$" "/wrmyers68/68.png" [NC,L]
+RewriteRule "^images/(.*[.]png)$" "/wrmyers68/images/$1" [NC,L]
 RewriteRule "^([23][0-9][0-9])$" "/cgi-bin/wrmyers68.cgi?id=$1" [NC,L]
+RewriteRule "^(42[1-4][1-4])$" "/cgi-bin/wrmyers68-post.cgi?id=$1" [NC,L]
+RewriteRule "^(43[1-4][1-4])$" "/cgi-bin/wrmyers68-under.cgi?id=$1" [NC,L]
 
