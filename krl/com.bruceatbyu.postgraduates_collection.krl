@@ -59,7 +59,7 @@ ruleset com.bruceatbyu.postgraduates_collection {
       pos = ordinals[postgrad.substr(4).as("Number")];
       map = ent:postgraduates{postgrad};
       name = <<#{map{"fn"}} #{map{"ln"}}>>;
-      raw = "https://raw.githubusercontent.com/b1conrad/wrmyers1968/master/images";
+      raw = "http://wrmyers68.com/images";
       <<<!DOCTYPE html>
 <html lang="en">
 <head>

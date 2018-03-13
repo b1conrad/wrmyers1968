@@ -59,7 +59,7 @@ ruleset com.bruceatbyu.undergraduates_collection {
       pos = ordinals[undergrad.substr(4).as("Number")];
       map = ent:undergraduates{undergrad};
       name = <<#{map{"fn"}} #{map{"ln"}}>>;
-      raw = "https://raw.githubusercontent.com/b1conrad/wrmyers1968/master/images";
+      raw = "http://wrmyers68.com/images";
       <<<!DOCTYPE html>
 <html lang="en">
 <head>

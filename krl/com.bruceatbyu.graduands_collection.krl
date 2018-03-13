@@ -61,7 +61,7 @@ ruleset com.bruceatbyu.graduands_collection {
     grad_page = function(grad) {
       map = ent:graduands{grad};
       name = <<#{map{"fn"}} #{map{"ln"}}>>;
-      raw = "https://raw.githubusercontent.com/b1conrad/wrmyers1968/master/images";
+      raw = "http://wrmyers68.com/images";
       <<<!DOCTYPE html>
 <html lang="en">
 <head>
