@@ -52,6 +52,7 @@ ruleset com.bruceatbyu.graduands_collection {
 <head>
 <meta charset="utf-8">
 <title>W. R. Myers 1968 Graduands</title>
+<link rel="icon" type="image/png" href="http://wrmyers68.com/68.png">
 </head>
 <body>
 #{grad_form()}</body>
@@ -67,6 +68,7 @@ ruleset com.bruceatbyu.graduands_collection {
 <head>
 <meta charset="utf-8">
 <title>#{name}</title>
+<link rel="icon" type="image/png" href="http://wrmyers68.com/68.png">
 </head>
 <body>
 <h1>#{name}</h1>
