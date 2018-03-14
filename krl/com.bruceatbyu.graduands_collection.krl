@@ -1,6 +1,9 @@
 ruleset com.bruceatbyu.graduands_collection {
   meta {
+    use module io.picolabs.wrangler alias Wrangler
+    use module io.picolabs.subscription alias Subscription
     shares __testing, import, graduands_page, grad_page, pageCounts
+    , preferredName
   }
   global {
     __testing = {
@@ -8,6 +11,7 @@ ruleset com.bruceatbyu.graduands_collection {
                  , { "name": "import", "args": [ "url" ] }
                  , { "name": "graduands_page" }
                  , { "name": "pageCounts" }
+                 , { "name": "preferredName", "args": [ "id", "name" ] }
                  ]
     ,
       "events": [ { "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
@@ -58,6 +62,13 @@ ruleset com.bruceatbyu.graduands_collection {
 #{grad_form()}</body>
 </html>
 >>
+    }
+    preferredName = function(id,name) {
+      subs = Subscription:established("Tx_role","member")
+// need to select the correct subscription -- for now just use the only one
+      .first();
+      resp = Wrangler:skyQuery(subs{"Tx"},"com.wrmyers68.profile","preferredName");
+      resp{"error"}.isnull() => resp | name
     }
     grad_page = function(grad) {
       map = ent:graduands{grad};
