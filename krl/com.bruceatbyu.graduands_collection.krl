@@ -11,10 +11,11 @@ ruleset com.bruceatbyu.graduands_collection {
                  , { "name": "import", "args": [ "url" ] }
                  , { "name": "graduands_page" }
                  , { "name": "pageCounts" }
-                 , { "name": "preferredName", "args": [ "id", "name" ] }
+                 , { "name": "preferredName", "args": [ "grad", "name" ] }
                  ]
     ,
       "events": [ { "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
+                , { "domain": "graduands_collection", "type": "subscription_accepted", "attrs": [ "name", "Tx" ] }
                 ]
     }
     hall_of_fame = function(hf) {
@@ -63,17 +64,19 @@ ruleset com.bruceatbyu.graduands_collection {
 </html>
 >>
     }
-    preferredName = function(id,name) {
-      subs = Subscription:established("Tx_role","member")
-// need to select the correct subscription -- for now just use the only one
-      .first();
-      resp = Wrangler:skyQuery(subs{"Tx"},"com.wrmyers68.profile","preferredName");
+    profileRID = "com.wrmyers68.profile";
+    preferredName = function(grad,name) {
+      map = (ent:graduands{grad}).klog("map");
+      Tx = map{"Tx"}.klog("Tx");
+      resp = Tx => Wrangler:skyQuery(Tx,profileRID,"preferredName").klog("resp")
+                 | name;
       resp{"error"}.isnull() => resp | name
     }
+    imagesURI = "http://wrmyers68.com/images";
     grad_page = function(grad) {
       map = ent:graduands{grad};
       name = <<#{map{"fn"}} #{map{"ln"}}>>;
-      raw = "http://wrmyers68.com/images";
+      pname = preferredName(grad,name);
       <<<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,7 +86,7 @@ ruleset com.bruceatbyu.graduands_collection {
 </head>
 <body>
 <h1>#{name}</h1>
-<img src="#{raw}/#{map{"id"}}.png">
+<img src="#{imagesURI}/#{map{"id"}}.png">
 </body>
 </html>
 >>
@@ -114,6 +117,16 @@ ruleset com.bruceatbyu.graduands_collection {
     }
     fired {
       ent:graduands{key} := map;
+    }
+  }
+  rule record_subscription {
+    select when graduands_collection subscription_accepted
+    pre {
+      key = event:attr("name");
+      Tx = event:attr("Tx");
+    }
+    fired {
+      ent:graduands{[key,"Tx"]} := Tx;
     }
   }
 }
