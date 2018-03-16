@@ -1,5 +1,6 @@
 ruleset com.wrmyers68.profile {
   meta {
+    provides preferredName
     shares __testing, preferredName
   }
   global {
