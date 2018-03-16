@@ -11,7 +11,7 @@ ruleset com.wrmyers68.grad {
                 ]
     }
     posts = function() {
-      pname = profile:preferredName;
+      pname = profile:preferredName();
       pname => <<<h1>#{pname}</h1>
 >> | ""
     }
