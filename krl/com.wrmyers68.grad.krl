@@ -28,7 +28,7 @@ ruleset com.wrmyers68.grad {
 </head>
 <body>
 <h1>#{name}</h1>
-<img src="#{imagesURI}/#{map{"id"}}.png">
+<img src="#{imagesURI}/#{id"}.png">
 #{posts()}</body>
 </html>
 >>
