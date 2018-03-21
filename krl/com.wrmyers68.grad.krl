@@ -26,6 +26,7 @@ ruleset com.wrmyers68.grad {
 <title>#{name}</title>
 <link rel="icon" type="image/png" href="http://wrmyers68.com/68.png">
 <link rel="stylesheet" href="http://wrmyers68.com/grad.css">
+<script type="text/javascript" src="http://wrmyers68.com/humanized_time_span.js"></script>
 </head>
 <body>
 <h1>#{name}</h1>
