@@ -35,7 +35,7 @@ ruleset com.wrmyers68.grad {
 <h1>#{name}</h1>
 <fieldset>
 <legend>
-from DAWN '68, p. #{id.subst(0,2)},
+from DAWN '68, p. #{id.substr(0,2)},
 <span title="1968">
 <script type="text/javascript">document.write(humanized_time_span("1968"))</script>
 </span>
