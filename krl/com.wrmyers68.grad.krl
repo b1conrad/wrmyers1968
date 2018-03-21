@@ -11,17 +11,13 @@ ruleset com.wrmyers68.grad {
                 ]
     }
     suite = function() {
-      pname = profile:preferredName();
-      pname != ent:name => <<<fieldset>
-<legend>preferred name</legend>
-<h1>#{pname}</h1>
-</fieldset>
->> | ""
+      ""
     }
     imagesURI = "http://wrmyers68.com/images";
     grad_page = function() {
       id = ent:id.substr(1);
-      name = ent:name;
+      pname = profile:preferredName();
+      name = pname != ent:name => pname | ent:name;
       <<<!DOCTYPE html>
 <html lang="en">
 <head>
