@@ -1,9 +1,7 @@
 ruleset com.bruceatbyu.graduands_collection {
   meta {
-    use module io.picolabs.wrangler alias Wrangler
-    use module io.picolabs.subscription alias Subscription
     shares __testing, import, graduands_page, grad_page, pageCounts
-    , preferredName
+    , Tx
   }
   global {
     __testing = {
@@ -11,7 +9,7 @@ ruleset com.bruceatbyu.graduands_collection {
                  , { "name": "import", "args": [ "url" ] }
                  , { "name": "graduands_page" }
                  , { "name": "pageCounts" }
-                 , { "name": "preferredName", "args": [ "grad", "name" ] }
+                 , { "name": "Tx", "args": [ "grad" ] }
                  ]
     ,
       "events": [ { "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
@@ -63,19 +61,14 @@ ruleset com.bruceatbyu.graduands_collection {
 </html>
 >>
     }
-    profileRID = "com.wrmyers68.profile";
-    preferredName = function(grad,name) {
+    Tx = function(grad) {
       map = (ent:graduands{grad}).klog("map");
-      Tx = map{"Tx"}.klog("Tx");
-      resp = Tx => Wrangler:skyQuery(Tx,profileRID,"preferredName").klog("resp")
-                 | name;
-      resp{"error"}.isnull() => resp | name
+      map{"Tx"}.klog("Tx")
     }
     imagesURI = "http://wrmyers68.com/images";
     grad_page = function(grad) {
       map = ent:graduands{grad};
       name = <<#{map{"fn"}} #{map{"ln"}}>>;
-      pname = preferredName(grad,name);
       <<<!DOCTYPE html>
 <html lang="en">
 <head>
