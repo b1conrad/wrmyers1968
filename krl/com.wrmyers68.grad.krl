@@ -25,6 +25,7 @@ ruleset com.wrmyers68.grad {
 <meta charset="utf-8">
 <title>#{name}</title>
 <link rel="icon" type="image/png" href="http://wrmyers68.com/68.png">
+<link rel="stylesheet" href="grad.css">
 </head>
 <body>
 <h1>#{name}</h1>
