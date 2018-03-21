@@ -10,7 +10,7 @@ ruleset com.wrmyers68.grad {
       "events": [ {"domain":"grad","type":"init", "attrs":["id","name"]}
                 ]
     }
-    posts = function() {
+    suite = function() {
       pname = profile:preferredName();
       pname != ent:name => <<<fieldset>
 <legend>preferred name</legend>
@@ -42,7 +42,7 @@ from DAWN '68, p. #{id.substr(0,2)},
 </legend>
 <img src="#{imagesURI}/#{id}.png">
 </fieldset>
-#{posts()}</body>
+#{suite()}</body>
 </html>
 >>
     }
