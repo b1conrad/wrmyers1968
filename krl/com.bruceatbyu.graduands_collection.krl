@@ -15,7 +15,6 @@ ruleset com.bruceatbyu.graduands_collection {
                  ]
     ,
       "events": [ { "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
-                , { "domain": "graduands_collection", "type": "subscription_accepted", "attrs": [ "name", "Tx" ] }
                 ]
     }
     hall_of_fame = function(hf) {
@@ -119,13 +118,16 @@ ruleset com.bruceatbyu.graduands_collection {
       ent:graduands{key} := map;
     }
   }
-  rule record_subscription {
-    select when graduands_collection subscription_accepted
+  rule auto_accept {
+    select when wrangler inbound_pending_subscription_added
     pre {
       key = event:attr("name");
       Tx = event:attr("Tx");
     }
+    if ent:graduands >< key then noop();
     fired {
+      raise wrangler event "pending_subscription_approval"
+        attributes event:attrs;
       ent:graduands{[key,"Tx"]} := Tx;
     }
   }
