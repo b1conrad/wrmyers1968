@@ -28,7 +28,15 @@ ruleset com.wrmyers68.grad {
 </head>
 <body>
 <h1>#{name}</h1>
+<fieldset>
+<legend>
+DAWN '68,
+<span title="1968">
+<script type="text/javascript">document.write(humanized_time_span("1968"))</script>
+</span>
+</legend>
 <img src="#{imagesURI}/#{id}.png">
+</fieldset>
 #{posts()}</body>
 </html>
 >>
