@@ -1,0 +1,9 @@
+fieldset {
+  width: 510px;
+  border:1px solid #8a4651;
+  border-radius: 10px;
+}
+legend {
+  text-align: right;
+}
+
