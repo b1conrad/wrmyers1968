@@ -8,4 +8,6 @@ RewriteRule "^images/(.*[.]png)$" "/wrmyers68/images/$1" [NC,L]
 RewriteRule "^([23][0-9][0-9])$" "/cgi-bin/wrmyers68.cgi?id=$1" [NC,L]
 RewriteRule "^(42[1-4][1-4])$" "/cgi-bin/wrmyers68-post.cgi?id=$1" [NC,L]
 RewriteRule "^(43[1-4][1-4])$" "/cgi-bin/wrmyers68-under.cgi?id=$1" [NC,L]
+RewriteRule "^grad.css$" "/wrmyers68/grad.css" [NC,L]
+RewriteRule "^humanized_time_span.js$" "/wrmyers68/humanized_time_span.js" [NC,L]
 
