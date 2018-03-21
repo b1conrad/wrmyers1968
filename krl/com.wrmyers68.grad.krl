@@ -12,7 +12,10 @@ ruleset com.wrmyers68.grad {
     }
     posts = function() {
       pname = profile:preferredName();
-      pname => <<<h1>#{pname}</h1>
+      pname != ent:name => <<<fieldset>
+<legend>preferred name</legend>
+<h1>#{pname}</h1>
+</fieldset>
 >> | ""
     }
     imagesURI = "http://wrmyers68.com/images";
@@ -32,7 +35,7 @@ ruleset com.wrmyers68.grad {
 <h1>#{name}</h1>
 <fieldset>
 <legend>
-DAWN '68,
+from DAWN '68, p. #{id.subst(0,2)},
 <span title="1968">
 <script type="text/javascript">document.write(humanized_time_span("1968"))</script>
 </span>
