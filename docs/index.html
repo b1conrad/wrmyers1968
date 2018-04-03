@@ -4,12 +4,37 @@
     <title>W. R. Myers class of '68</title>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="http://wrmyers68.com/68.png">
+    <style type="text/css">
+      div#index {
+        border: 1px solid #894651;
+        border-radius: 10px;
+        max-width: 640px;
+      }
+      div#index h1 {
+        padding-left: 2px;
+      }
+      div#index.rollup {
+        height: 5em;
+        width: 640px;
+      }
+      table {
+        width: 640px;
+      }
+      div#index.rollup table tbody {
+        display: none;
+      }
+      table tbody {
+        overflow: auto;
+        height: 80vh;
+        display: block;
+      }
+    </style>
   </head>
   <body>
+    <div id="index">
+    <h1>W. R. Myers class of 1968</h1>
     <table>
-      <tr>
-      <td colspan="12"><h1>W. R. Myers class of 1968</h1></td>
-      </tr>
+      <tbody>
       <tr>
       <td colspan="12"><h2>Graduands</h2><hr></td>
       </tr>
@@ -275,6 +300,16 @@
       <tr>
       <td colspan="13" style="text-align:center">page 43<hr></td>
       </tr>
+      </tbody>
     </table>
+    </div>
+    <script type="text/javascript">
+      (function(){
+        var theDiv = document.getElementById("index");
+        theDiv.addEventListener('click',function(ev){
+          this.classList.toggle('rollup');
+        });
+      })();
+    </script>
   </body>
 </html>
