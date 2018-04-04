@@ -13,9 +13,15 @@
       div#index h1 {
         padding-left: 2px;
       }
+      div#index.rollup h1:before {
+        font-style: italic;
+        content: 'back to ';
+      }
       div#index.rollup {
         height: 5em;
         width: 640px;
+        border: 2px outset #894951;
+        background: rgba(137,70,81,0.3);
       }
       table {
         width: 640px;
@@ -26,6 +32,15 @@
       table tbody {
         overflow: auto;
         height: 80vh;
+        display: block;
+      }
+      iframe {
+        border: none;
+        margin-top: 10px;
+        display: none;
+        overflow: auto;
+      }
+      iframe.rollup {
         display: block;
       }
     </style>
@@ -303,12 +318,22 @@
       </tbody>
     </table>
     </div>
+    <iframe id="wall" src="about:blank" name="wall" width="640" height="960">
+    </iframe>
     <script type="text/javascript">
       (function(){
         var theDiv = document.getElementById("index");
-        theDiv.addEventListener('click',function(ev){
-          this.classList.toggle('rollup');
-        });
+        var theWall = document.getElementById("wall");
+        if(theWall){
+          var anchors = document.getElementsByTagName("a");
+          for(var i=0; i<anchors.length; ++i){
+            anchors[i].setAttribute('target','wall');
+          }
+          theDiv.addEventListener('click',function(ev){
+            this.classList.toggle('rollup');
+            theWall.classList.toggle('rollup');
+          });
+        }
       })();
     </script>
   </body>
