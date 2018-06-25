@@ -30,7 +30,7 @@ reported by #{comment{"from"}},
     imagesURI = "http://wrmyers68.com/images";
     grad_page = function() {
       id = ent:id.substr(1);
-      pname = profile:preferredName();
+      pname = profile:preferredName() || ent:name;
       name = pname != ent:name => pname | ent:name;
       <<<!DOCTYPE html>
 <html lang="en">
