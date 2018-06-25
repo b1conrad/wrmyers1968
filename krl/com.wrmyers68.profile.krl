@@ -8,17 +8,27 @@ ruleset com.wrmyers68.profile {
       "queries": [ { "name": "__testing" }
                  , { "name": "preferredName" }
                  ],
-      "events": [ {"domain":"profile","type":"updated_profile", "attrs":["id","name"]}
+      "events": [ {"domain":"profile","type":"new", "attrs":["id","name"]}
                 ]
     }
     preferredName = function() {
       ent:preferredName
     }
   }
+  rule create_new_profile {
+    select when profile new id re#^(g\d{3})$# setting(id)
+    fired {
+      ent:id := id;
+      ent:preferredName := event:attr("name");
+    }
+  }
+
   rule update_profile {
     select when profile updated_profile
+    pre {
+      id = event:attr("id");
+    }
     fired {
-      ent:id := event:attr("id").defaultsTo(ent:id);
       ent:preferredName := event:attr("name");
     }
   }
