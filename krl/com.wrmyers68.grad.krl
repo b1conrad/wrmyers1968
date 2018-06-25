@@ -1,6 +1,7 @@
 ruleset com.wrmyers68.grad {
   meta {
     use module com.wrmyers68.profile alias profile
+    use module com.wrmyers68.comments alias comments
     shares __testing, grad_page
   }
   global {
@@ -10,8 +11,21 @@ ruleset com.wrmyers68.grad {
       "events": [ {"domain":"grad","type":"init", "attrs":["id","name"]}
                 ]
     }
+    commentHTML = function(comment){
+      date = comment{"date"};
+      <<<fieldset>
+<legend>
+reported by #{comment{"from"}},
+<span title="#{date}">
+<script type="text/javascript">document.write(humanized_time_span("#{date}"))</script>
+</span>
+</legend>
+#{comment{"text"}}
+</fieldset>
+>>
+    }
     suite = function() {
-      ""
+      comments:reports().map(function(r){commentHTML(r)}).join("")
     }
     imagesURI = "http://wrmyers68.com/images";
     grad_page = function() {
