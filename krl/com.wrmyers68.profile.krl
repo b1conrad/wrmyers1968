@@ -1,6 +1,6 @@
 ruleset com.wrmyers68.profile {
   meta {
-    provides preferredName
+    provides id, preferredName, clear_HTML
     shares __testing, preferredName
   }
   global {
@@ -11,8 +11,14 @@ ruleset com.wrmyers68.profile {
       "events": [ {"domain":"profile","type":"new", "attrs":["id","name"]}
                 ]
     }
+    id = function(){
+      ent:id
+    }
     preferredName = function() {
       ent:preferredName
+    }
+    clear_HTML = function(input){
+      input.replace(re#<#g,"＜").replace(re#>#g,"＞")
     }
   }
   rule create_new_profile {
@@ -29,7 +35,7 @@ ruleset com.wrmyers68.profile {
       id = event:attr("id");
     }
     fired {
-      ent:preferredName := event:attr("name");
+      ent:preferredName := clear_HTML(event:attr("name"));
     }
   }
 

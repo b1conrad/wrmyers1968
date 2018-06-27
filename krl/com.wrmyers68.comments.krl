@@ -1,5 +1,6 @@
 ruleset com.wrmyers68.comments {
   meta {
+    use module com.wrmyers68.profile alias profile
     provides reports
     shares __testing
   }
@@ -8,7 +9,7 @@ ruleset com.wrmyers68.comments {
       [ { "name": "__testing" }
       //, { "name": "entry", "args": [ "key" ] }
       ] , "events":
-      [ { "domain": "comments", "type": "new", "attrs": [ "date", "from", "text" ] }
+      [ { "domain": "comments", "type": "new", "attrs": [ "date", "from", "text", "to" ] }
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
     }
@@ -27,13 +28,14 @@ ruleset com.wrmyers68.comments {
     select when comments new
     pre {
       date = event:attr("date") || time:now();
-      from = event:attr("from");
-      text = event:attr("text");
+      from = profile:clear_HTML(event:attr("from"));
+      text = profile:clear_HTML(event:attr("text"));
+      to = event:attr("to");
     }
-    if from && text then noop();
+    if from && text && to==profile:id() then noop();
     fired {
       ent:reports := ent:reports.append({
-        "date":date, "from": from, "text": text
+        "date":date.replace(re#"#g,""), "from": from, "text": text
       });
     }
   }
