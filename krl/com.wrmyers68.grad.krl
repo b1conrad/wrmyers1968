@@ -41,17 +41,21 @@ reported by #{comment{"from"}},
 <fieldset id="comment" class="hidden">
 <legend>to be reported by <span id="reporter"></span>, now</legend>
 <form>
+<input type="hidden" name="to" value="#{ent:id}">
 <input type="hidden" name="name">
 <textarea placeholder="comment" name="text" cols="30" rows="5"></textarea><br>
-<button id="logout" style="float:right">logout</button>
+<button class="logout">logout</button>
 <input type="submit" value="submit">
 </form>
 </fieldset>
 <fieldset id="rename" class="hidden">
 <legend>change my name</legend>
+<form>
 <input type="hidden" name="id">
 <input placeholder="preferred name" name="name" value="#{pname}" size="30"><br>
-coming soon...
+<button class="logout">logout</button>
+<input type="submit" value="change">
+</form>
 </fieldset>
 >>
     }

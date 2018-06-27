@@ -9,3 +9,6 @@ legend {
 fieldset.hidden {
   display: none;
 }
+.logout {
+  float: right;
+}
