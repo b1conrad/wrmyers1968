@@ -25,7 +25,35 @@ reported by #{comment{"from"}},
 >>
     }
     suite = function() {
-      comments:reports().map(function(r){commentHTML(r)}).join("")
+      comments:reports()
+        .filter(function(r){r{"date"}})
+        .map(function(r){commentHTML(r)})
+        .join("")
+    }
+    extras = function(pname){
+      <<<fieldset id="login">
+<legend>login to comment</legend>
+<form>
+<input placeholder="personal identifier DID" name="owner_id" size="30">
+<input type="submit" value="identify">
+</form>
+</fieldset>
+<fieldset id="comment" class="hidden">
+<legend>to be reported by <span id="reporter"></span>, now</legend>
+<form>
+<input type="hidden" name="name">
+<textarea placeholder="comment" name="text" cols="30" rows="5"></textarea><br>
+<button id="logout" style="float:right">logout</button>
+<input type="submit" value="submit">
+</form>
+</fieldset>
+<fieldset id="rename" class="hidden">
+<legend>change my name</legend>
+<input type="hidden" name="id">
+<input placeholder="preferred name" name="name" value="#{pname}" size="30"><br>
+coming soon...
+</fieldset>
+>>
     }
     imagesURI = "http://wrmyers68.com/images";
     grad_page = function() {
@@ -40,6 +68,8 @@ reported by #{comment{"from"}},
 <link rel="icon" type="image/png" href="http://wrmyers68.com/68.png">
 <link rel="stylesheet" href="http://wrmyers68.com/grad.css">
 <script type="text/javascript" src="http://wrmyers68.com/humanized_time_span.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js"></script>
+<script type="text/javascript" src="http://wrmyers68.com/grad.js"></script>
 </head>
 <body>
 <h1>#{name}</h1>
@@ -53,7 +83,7 @@ from DAWN '68, p. #{id.substr(0,2)},
 <img src="#{imagesURI}/#{id}.png">
 </fieldset>
 #{suite()}</body>
-</html>
+#{extras(pname)}</html>
 >>
     }
   }

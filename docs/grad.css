@@ -6,4 +6,6 @@ fieldset {
 legend {
   text-align: right;
 }
-
+fieldset.hidden {
+  display: none;
+}
