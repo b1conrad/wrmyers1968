@@ -41,9 +41,10 @@ reported by #{comment{"from"}},
 <fieldset id="comment" class="hidden">
 <legend>to be reported by <span id="reporter"></span>, now</legend>
 <form>
+<input type="hidden" name="did" value="#{meta:eci}">
 <input type="hidden" name="to" value="#{ent:id}">
-<input type="hidden" name="name">
-<textarea placeholder="comment" name="text" cols="30" rows="5"></textarea><br>
+<input type="hidden" name="from">
+<textarea placeholder="report" name="text" cols="30" rows="5"></textarea><br>
 <button class="logout">logout</button>
 <input type="submit" value="submit">
 </form>
@@ -51,7 +52,7 @@ reported by #{comment{"from"}},
 <fieldset id="rename" class="hidden">
 <legend>change my name</legend>
 <form>
-<input type="hidden" name="id">
+<input type="hidden" name="id" value="#{ent:id}">
 <input placeholder="preferred name" name="name" value="#{pname}" size="30"><br>
 <button class="logout">logout</button>
 <input type="submit" value="change">

@@ -34,6 +34,7 @@ ruleset com.wrmyers68.profile {
     pre {
       id = event:attr("id");
     }
+    if id == ent:id then noop();
     fired {
       ent:preferredName := clear_HTML(event:attr("name"));
     }
