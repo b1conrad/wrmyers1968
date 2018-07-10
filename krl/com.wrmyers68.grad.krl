@@ -44,6 +44,7 @@ reported by #{comment{"from"}},
 <input type="hidden" name="did" value="#{meta:eci}">
 <input type="hidden" name="to" value="#{ent:id}">
 <input type="hidden" name="from">
+<input type="hidden" name="id">
 <textarea placeholder="report" name="text" cols="30" rows="5"></textarea><br>
 <button class="logout">logout</button>
 <input type="submit" value="submit">
@@ -94,6 +95,7 @@ from DAWN '68, p. #{id.substr(0,2)},
   }
   rule initialize {
     select when grad init
+    if ent:id.isnull() && ent:name.isnull() then noop();
     fired {
       ent:id := event:attr("id");
       ent:name := event:attr("name");

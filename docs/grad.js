@@ -21,6 +21,7 @@ $(document).ready(function() {
     $("#login").addClass("hidden");
     $("#comment").removeClass("hidden");
     $("#comment").find("input[name=from]").val(logged_in_grad.name);
+    $("#comment").find("input[name=id]").val(logged_in_grad.id);
     if(logged_in_grad.id===page_about_grad.id){
       $("#rename").removeClass("hidden");
     }
