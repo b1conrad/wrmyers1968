@@ -39,7 +39,7 @@ reported by #{comment{"from"}},
 </form>
 </fieldset>
 <fieldset id="comment" class="hidden">
-<legend>to be reported by <span id="reporter"></span>, now</legend>
+<legend>comment or report as <span id="reporter"></span></legend>
 <form>
 <input type="hidden" name="did" value="#{meta:eci}">
 <input type="hidden" name="to" value="#{ent:id}">
