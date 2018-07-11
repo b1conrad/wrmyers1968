@@ -2,14 +2,15 @@ ruleset com.wrmyers68.comments {
   meta {
     use module com.wrmyers68.profile alias profile
     provides reports
-    shares __testing
+    shares __testing, reports
   }
   global {
     __testing = { "queries":
       [ { "name": "__testing" }
+      , { "name": "reports" }
       //, { "name": "entry", "args": [ "key" ] }
       ] , "events":
-      [ { "domain": "comments", "type": "new", "attrs": [ "date", "from", "text", "to" ] }
+      [ { "domain": "comments", "type": "new", "attrs": [ "date", "from", "id", "text", "to" ] }
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
     }
@@ -36,7 +37,8 @@ ruleset com.wrmyers68.comments {
     if from && text && to==profile:id() then noop();
     fired {
       ent:reports := ent:reports.append({
-        "date":date.replace(re#"#g,""), "from": from, "id": id, "text": text
+        "date":date.replace(re#"#g,""),
+        "from": from, "id": id, "text": text, "to": to
       });
     }
   }

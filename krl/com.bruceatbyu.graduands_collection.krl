@@ -1,7 +1,8 @@
 ruleset com.bruceatbyu.graduands_collection {
   meta {
+    use module io.picolabs.wrangler alias wrangler
     shares __testing, import, graduands_page, grad_page, pageCounts
-    , Tx
+    , Tx, all_comments
   }
   global {
     __testing = {
@@ -10,6 +11,7 @@ ruleset com.bruceatbyu.graduands_collection {
                  , { "name": "graduands_page" }
                  , { "name": "pageCounts" }
                  , { "name": "Tx", "args": [ "grad" ] }
+                 , { "name": "all_comments", "args": [ "grad" ] }
                  ]
     ,
       "events": [ { "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
@@ -92,6 +94,21 @@ ruleset com.bruceatbyu.graduands_collection {
       ent:graduands.values()
                    .collect(function(v){math_int(v{"id"}/10)})
                    .map(function(v,k){v.length()})
+    }
+    all_comments = function(grad){
+      ent:graduands.map(function(v,k){v{"Tx"}})
+                   .filter(function(v,k){v})
+                   .map(function(v,k){
+                     defaults = function(m){
+                       m.put({"to": m{"to"} || k, "id": m{"id"} || "g266"})
+                     };
+                     r =wrangler:skyQuery(v,"com.wrmyers68.comments","reports");
+                     r{"error"} => []
+                                 | r.map(defaults)
+                                    .filter(function(m){not grad || m{"id"}==grad})
+                   })
+                   .values()
+                   .reduce(function(a,v){a.append(v)},[])
     }
   }
   rule intialization {
