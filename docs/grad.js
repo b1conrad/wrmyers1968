@@ -78,4 +78,15 @@ $(document).ready(function() {
       }
     });
   });
+  var maxlength = $("#report").attr("maxlength");
+  $("#remaining").html(maxlength);
+  $("#report").bind("input",function(){
+    $("#remaining").html(maxlength-this.value.length)
+  });
+  $("#report").bind("focus",function(){
+    $("#remaining").parent().removeClass("hidden");
+  });
+  $("#report").bind("focusout",function(){
+    $("#remaining").parent().addClass("hidden");
+  });
 });

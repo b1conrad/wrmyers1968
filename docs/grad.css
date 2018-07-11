@@ -6,9 +6,20 @@ fieldset {
 legend {
   text-align: right;
 }
-fieldset.hidden {
+.hidden {
   display: none;
 }
-.logout {
-  float: right;
+#container {
+  position: relative;
+}
+#container div {
+  position: absolute;
+  color: silver;
+  bottom: 5px;
+  right: 0;
+  font: 400 11px system-ui;
+}
+textarea {
+  width: 100%;
+  resize:none;
 }

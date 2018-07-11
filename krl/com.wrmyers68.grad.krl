@@ -39,23 +39,25 @@ reported by #{comment{"from"}},
 </form>
 </fieldset>
 <fieldset id="comment" class="hidden">
-<legend>comment or report as <span id="reporter"></span></legend>
+<legend>comment or report as <span id="reporter"></span>
+ (<button class="logout">logout</button>)</legend>
 <form>
 <input type="hidden" name="did" value="#{meta:eci}">
 <input type="hidden" name="to" value="#{ent:id}">
 <input type="hidden" name="from">
 <input type="hidden" name="id">
-<textarea placeholder="report" name="text" cols="30" rows="5"></textarea><br>
-<button class="logout">logout</button>
+<div id="container">
+<textarea id="report" placeholder="report" name="text" cols="30" rows="3" maxlength="280" required></textarea>
+<div class="hidden">remaining: <span id="remaining"></span></div>
+</div>
 <input type="submit" value="submit">
 </form>
 </fieldset>
 <fieldset id="rename" class="hidden">
-<legend>change my name</legend>
+<legend>change my name (<button class="logout">logout</button>)</legend>
 <form>
 <input type="hidden" name="id" value="#{ent:id}">
-<input placeholder="preferred name" name="name" value="#{pname}" size="30"><br>
-<button class="logout">logout</button>
+<input placeholder="preferred name" name="name" value="#{pname}" size="30">
 <input type="submit" value="change">
 </form>
 </fieldset>
@@ -88,8 +90,8 @@ from DAWN '68, p. #{id.substr(0,2)},
 </legend>
 <img src="#{imagesURI}/#{id}.png">
 </fieldset>
-#{suite()}</body>
-#{extras(pname)}</html>
+#{suite()}#{extras(pname)}</body>
+</html>
 >>
     }
   }
