@@ -47,7 +47,7 @@ reported by #{comment{"from"}},
 <input type="hidden" name="from">
 <input type="hidden" name="id">
 <div id="container">
-<textarea id="report" placeholder="report" name="text" cols="30" rows="3" maxlength="280" required></textarea>
+<textarea id="report" placeholder="report" name="text" rows="4" maxlength="280" required></textarea>
 <div class="hidden">remaining: <span id="remaining"></span></div>
 </div>
 <input type="submit" value="submit">
