@@ -46,13 +46,4 @@ ruleset com.wrmyers68.profile {
       ent:preferredName := clear_HTML(event:attr("name"),60);
     }
   }
-
-  rule process_login {
-    select when profile login
-    send_directive("login ok",{
-      "grad_id": ent:id,
-      "grad_did": meta:eci,
-      "grad_name": ent:preferredName
-    })
-  }
 }

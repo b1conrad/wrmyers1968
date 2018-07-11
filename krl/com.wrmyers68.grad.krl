@@ -101,4 +101,13 @@ from DAWN '68, p. #{id.substr(0,2)},
       ent:name := event:attr("name");
     }
   }
+
+  rule process_login {
+    select when profile login
+    send_directive("login ok",{
+      "grad_id": ent:id,
+      "grad_did": meta:eci,
+      "grad_name": profile:preferredName() || ent:name
+    })
+  }
 }
