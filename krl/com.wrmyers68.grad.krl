@@ -95,7 +95,21 @@ from DAWN '68, p. #{id.substr(0,2)},
 >>
     }
   }
-  rule initialize {
+  rule initialize_on_install {
+    select when wrangler ruleset_added where event:attr("rids") >< meta:rid
+    pre {
+      rs_attrs = event:attr("rs_attrs");
+      name = rs_attrs{"name"};
+      grad = rs_attrs{"grad"};
+    }
+    if rs_attrs && name && grad then noop();
+    fired {
+      ent:id := grad;
+      ent:name := name;
+    }
+  }
+
+  rule initialize { // deprecated; was for manual use
     select when grad init
     if ent:id.isnull() && ent:name.isnull() then noop();
     fired {

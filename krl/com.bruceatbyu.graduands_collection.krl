@@ -1,6 +1,7 @@
 ruleset com.bruceatbyu.graduands_collection {
   meta {
     use module io.picolabs.wrangler alias wrangler
+    provides grads
     shares __testing, import, graduands_page, grad_page, pageCounts
     , Tx, all_comments
   }
@@ -16,6 +17,9 @@ ruleset com.bruceatbyu.graduands_collection {
     ,
       "events": [ { "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
                 ]
+    }
+    grads = function(){
+      ent:graduands
     }
     hall_of_fame = function(hf) {
       hf.replace(re#"#g,"").split(re#, #)
