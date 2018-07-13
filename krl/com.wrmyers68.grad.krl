@@ -9,6 +9,7 @@ ruleset com.wrmyers68.grad {
       "queries": [ { "name": "__testing" }
                  ],
       "events": [ {"domain":"grad","type":"init", "attrs":["id","name"]}
+                , {"domain":"grad","type":"new_graduands_wellKnown_Tx","attrs":["Tx"]}
                 ]
     }
     commentHTML = function(comment){
@@ -94,7 +95,15 @@ from DAWN '68, p. #{id.substr(0,2)},
 </html>
 >>
     }
+    login_channel = {"name":"login", "type":"secret"}
   }
+  rule set_graduands_wellKnown_Tx {
+    select when grad new_graduands_wellKnown_Tx Tx re#^(.+)$# setting(Tx)
+    fired {
+      app:graduands_wellKnown_Tx := Tx;
+    }
+  }
+
   rule initialize_on_install {
     select when wrangler ruleset_added where event:attr("rids") >< meta:rid
     pre {
@@ -106,6 +115,14 @@ from DAWN '68, p. #{id.substr(0,2)},
     fired {
       ent:id := grad;
       ent:name := name;
+      raise wrangler event "subscription"
+        attributes {
+          "wellKnown_Tx":app:graduands_wellKnown_Tx,
+          "Rx_role":"member", "Tx_role":"collection",
+          "name":grad, "channel_type":"subscription"
+        };
+      raise wrangler event "channel_creation_requested"
+        attributes login_channel;
     }
   }
 
