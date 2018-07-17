@@ -336,9 +336,9 @@
             theWall.classList.toggle('rollup');
           });
         }
-        var theHash = window.location.hash.substring(1).split("/");
-        if(theHash[0]){
-          document.getElementById(theHash[0]).click();
+        var h = window.location.hash.match(/^#.(g\d{3})/);
+        if(h && h[1]){
+          setTimeout(function(){document.getElementById(h[1]).click()},100);
         }
       })();
     </script>
