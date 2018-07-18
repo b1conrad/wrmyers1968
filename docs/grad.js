@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  var did_fragment = /^#.(g\d{3})\/did:npe:(.{21,22})/;
   var formToJSON = function(form){
     var json = {};
     $.each($(form).serializeArray(), function(key, elm){
@@ -16,7 +17,8 @@ $(document).ready(function() {
     "eci": sessionStorage.getItem("grad_did"),
     "name": sessionStorage.getItem("grad_name")
   };
-  if(logged_in_grad.id && logged_in_grad.name){
+  var logged_in = logged_in_grad.id && logged_in_grad.name;
+  if(logged_in){
     $("#reporter").text(logged_in_grad.name);
     $("#login").addClass("hidden");
     $("#comment").removeClass("hidden");
@@ -52,6 +54,7 @@ $(document).ready(function() {
     sessionStorage.removeItem("grad_id");
     sessionStorage.removeItem("grad_did");
     sessionStorage.removeItem("grad_name");
+    parent.location.hash = "";
     location.reload();
   });
   $("#rename form").bind("submit",function(e){
@@ -89,4 +92,11 @@ $(document).ready(function() {
   $("#report").bind("focusout",function(){
     $("#remaining").parent().addClass("hidden");
   });
+  if(!logged_in){
+    var h = parent.location.hash.match(did_fragment);
+    if(h && h[1]==page_about_grad.id && h[2]){
+      $("#login").find("input[name=owner_id]").val(h[2]);
+      $("#login form").submit();
+    }
+  }
 });
