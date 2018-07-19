@@ -3,20 +3,23 @@ ruleset com.wrmyers68.comments {
     use module io.picolabs.subscription alias Subs
     use module com.wrmyers68.profile alias profile
     provides reports
-    shares __testing, reports
+    shares __testing, reports, report
   }
   global {
     __testing = { "queries":
       [ { "name": "__testing" }
       , { "name": "reports" }
-      //, { "name": "entry", "args": [ "key" ] }
+      , { "name": "report", "args": [ "key" ] }
       ] , "events":
       [ { "domain": "comments", "type": "new", "attrs": [ "date", "from", "id", "text", "to" ] }
-      //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
+      , { "domain": "comments", "type": "restrict", "attrs": [ "key", "eci" ] }
       ]
     }
     reports = function(){
       ent:reports
+    }
+    report = function(key){
+      ent:reports.filter(function(v,k){v{"date"}==key})
     }
   }
   rule initialize {
@@ -57,5 +60,38 @@ ruleset com.wrmyers68.comments {
         "attrs": event:attrs
       })
     }
+  }
+  rule delete_comment {
+    select when comments restrict
+      key re#^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[.]\d{3}Z)$#
+      eci re#^([A-Za-z0-9]{21,22})$#
+      setting(key,eci)
+    pre {
+      identity = function(x){x};
+      index = ent:reports.reduce(function(a,v,i){
+        v{"date"}==key => i | a
+      }, -1);
+      errs = [
+        [index >= 0,        meta:eci == eci],
+        ["no such message", "eci mismatch"]
+      ].pairwise(function(c,m){c => "" | m}).klog("errs");
+      ok = errs.none(identity);
+    }
+    if ok then noop()
+    fired {
+      ent:reports := ent:reports.splice(index,1);
+      raise comments event "report_deleted" attributes event:attrs.put("index",index)
+    } else {
+      raise comments event "restrict_error"
+        attributes event:attrs.put({"msg": errs.filter(identity).join("; ")});
+    }
+  }
+  rule report_restriction_success {
+    select when comments report_deleted index re#^(\d+)$# setting(index)
+    send_directive("report_deleted",{"index":index})
+  }
+  rule report_restriction_error {
+    select when comments restrict_error
+    send_directive("report_deletion_error",{"message":event:attr("msg")})
   }
 }
