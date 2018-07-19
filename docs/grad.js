@@ -12,13 +12,17 @@ $(document).ready(function() {
     "eci": $("#comment").find("input[name=did]").val(),
     "name": $("#rename").find("input[name=name]").val()
   };
-  var logged_in_grad = {
-    "id": sessionStorage.getItem("grad_id"),
-    "eci": sessionStorage.getItem("grad_did"),
-    "name": sessionStorage.getItem("grad_name")
+  var logged_in_grad;
+  var logged_in;
+  var check_logged_in = function() {
+    logged_in_grad = {
+      "id": sessionStorage.getItem("grad_id"),
+      "eci": sessionStorage.getItem("grad_did"),
+      "name": sessionStorage.getItem("grad_name")
+    };
+    logged_in = logged_in_grad.id && logged_in_grad.name;
   };
-  var logged_in = logged_in_grad.id && logged_in_grad.name;
-  if(logged_in){
+  var show_widgets = function() {
     $("#reporter").text(logged_in_grad.name);
     $("#login").addClass("hidden");
     $("#comment").removeClass("hidden");
@@ -27,13 +31,23 @@ $(document).ready(function() {
     if(logged_in_grad.id===page_about_grad.id){
       $("#rename").removeClass("hidden");
     }
+  };
+  var hide_widgets = function() {
+    $("#login").removeClass("hidden");
+    $("#comment").addClass("hidden");
+    $("#rename").addClass("hidden");
+  }
+  check_logged_in();
+  if(logged_in){
+    show_widgets();
   }
   var performLogin = function(options,grad_needs_time){
     sessionStorage.setItem("grad_id",options.grad_id);
     sessionStorage.setItem("grad_did",options.grad_did);
     sessionStorage.setItem("grad_name",options.grad_name);
-    if(!grad_needs_time){
-      location.reload();
+    check_logged_in();
+    if(logged_in){
+      show_widgets();
     }
   };
   $("#login form").bind("submit",function(e){
@@ -55,7 +69,11 @@ $(document).ready(function() {
     sessionStorage.removeItem("grad_did");
     sessionStorage.removeItem("grad_name");
     parent.location.hash = "";
-    location.reload();
+    check_logged_in();
+    if(!logged_in){
+      hide_widgets();
+      $("#login").find("input[name=owner_id]").val("");
+    }
   });
   $("#rename form").bind("submit",function(e){
     e.preventDefault();
