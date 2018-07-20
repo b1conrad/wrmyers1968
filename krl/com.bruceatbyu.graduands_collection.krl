@@ -145,4 +145,15 @@ ruleset com.bruceatbyu.graduands_collection {
       ent:graduands{[key,"Tx"]} := Tx;
     }
   }
+  rule record_latest_report {
+    select when graduands_collection latest_comment
+      id re#(g\d{3})# to re#(g\d{3})# setting(id,to)
+    pre {
+      time = event:attr("date");
+    }
+    fired {
+      ent:graduands{[id,"rf"]} := time;
+      ent:graduands{[to,"rt"]} := time;
+    }
+  }
 }
