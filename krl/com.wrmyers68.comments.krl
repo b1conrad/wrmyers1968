@@ -11,8 +11,7 @@ ruleset com.wrmyers68.comments {
       , { "name": "reports" }
       , { "name": "report", "args": [ "key" ] }
       ] , "events":
-      [ { "domain": "comments", "type": "new", "attrs": [ "date", "from", "id", "text", "to" ] }
-      , { "domain": "comments", "type": "restrict", "attrs": [ "key", "eci" ] }
+      [ { "domain": "comments", "type": "restrict", "attrs": [ "key", "eci" ] }
       ]
     }
     reports = function(){
@@ -76,21 +75,37 @@ ruleset com.wrmyers68.comments {
         ["no such message", "eci mismatch"]
       ].pairwise(function(c,m){c => "" | m}).klog("errs");
       ok = errs.none(identity);
+      to_be_deleted = ok => ent:reports[index] | null;
     }
     if ok then noop()
     fired {
       ent:reports := ent:reports.splice(index,1);
-      raise comments event "report_deleted" attributes event:attrs.put("index",index)
+      raise comments event "report_deleted"
+        attributes ({"index":index,"report":to_be_deleted})
     } else {
       raise comments event "restrict_error"
         attributes event:attrs.put({"msg": errs.filter(identity).join("; ")});
     }
   }
-  rule report_restriction_success {
+  rule notify_of_deleted_comment {
     select when comments report_deleted index re#^(\d+)$# setting(index)
-    send_directive("report_deleted",{"index":index})
+    pre {
+      last = function(){
+        len = ent:reports.length();
+        len > 0 => ent:reports[len-1] | null
+      }
+      report = event:attr("report");
+      subs = Subs:established("Rx_role","member").head();
+      eci = subs{"Tx"};
+    }
+    every {
+      send_directive("report_deleted",{"index":index,"report":report})
+      event:send({"eci":eci,
+        "domain":"graduands_collection", "type": "deleted_comment",
+        "attrs": {"deleted":report,"latest":last()} })
+      }
   }
-  rule report_restriction_error {
+  rule notify_of_deleted_comment_error {
     select when comments restrict_error
     send_directive("report_deletion_error",{"message":event:attr("msg")})
   }
