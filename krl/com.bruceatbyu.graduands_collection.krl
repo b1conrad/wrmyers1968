@@ -5,17 +5,26 @@ ruleset com.bruceatbyu.graduands_collection {
     shares __testing, import, graduands_page, grad_page, pageCounts
     , Tx, all_comments
   }
+  // ent:graduands is a map of maps keyed by grad id ex. "g266"
+  // each map has keys as follows
+  // fn: first name
+  // ln: last name
+  // id: grad id number ex. 266
+  // hf: hall of fame an array of labels or missing
+  // Tx: ECI to the grad pico per subscription
+  // rf: time of latest report from this person
+  // rt: time of latest report to this person
   global {
     __testing = {
       "queries": [ { "name": "__testing" }
-                 , { "name": "import", "args": [ "url" ] }
+                 //, { "name": "import", "args": [ "url" ] }
                  , { "name": "graduands_page" }
                  , { "name": "pageCounts" }
                  , { "name": "Tx", "args": [ "grad" ] }
                  , { "name": "all_comments", "args": [ "grad" ] }
                  ]
     ,
-      "events": [ { "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
+      "events": [ //{ "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
                 ]
     }
     grads = function(){
@@ -122,6 +131,7 @@ ruleset com.bruceatbyu.graduands_collection {
       ent:graduands := {};
     }
   }
+/* off because already done
   rule import_graduands_collection {
     select when graduands_collection csv_available
     foreach import(event:attr("url")) setting(map)
@@ -132,6 +142,7 @@ ruleset com.bruceatbyu.graduands_collection {
       ent:graduands{key} := map;
     }
   }
+*/
   rule auto_accept {
     select when wrangler inbound_pending_subscription_added
     pre {
@@ -153,6 +164,18 @@ ruleset com.bruceatbyu.graduands_collection {
     }
     fired {
       ent:graduands{[id,"rf"]} := time;
+      ent:graduands{[to,"rt"]} := time;
+    }
+  }
+  rule record_deleted_report{
+    select when graduands_collection deleted_comment
+    pre {
+      to = event:attr("deleted"){"to"};
+      latest = event:attr("latest");
+      time = latest => latest{"date"} | null
+    }
+    if ent:graduands >< to then noop();
+    fired {
       ent:graduands{[to,"rt"]} := time;
     }
   }
