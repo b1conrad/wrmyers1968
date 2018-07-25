@@ -19,21 +19,22 @@ ruleset com.wrmyers68.invitation {
         v{"name"}=="login" && v{"type"}=="secret"
       }).head(){"id"};
       name = profile:preferredName();
-      <<This message is for #{name}.
+      <<Hi #{name.split(re# #)[0]},
       
-The link below will immediately place you on your page and ready to comment:
+You're invited to add some information about your life during the last fifty years.
+
+The link below will immediately place you on your page, where you can change 
+your display name and add comments:
 
 http://wrmyers68.com/#!#{gid}/did:npe:#{eci} 
 
 From here, you can add some information to your own page, with each entry limited
-to 280 characters, so make as many entries as you need. I you have something
+to 280 characters, so make as many entries as you need. If you have something
 longer, please send it to me and I'll publish it on wrmyers68.com for you.
 
-You're invited to add some information about your life during the last fifty years.
-
-There is a different link for each person. So, please don't share this 
-particular link with anyone else, but encourage others to visit 
-http://wrmyers68.com and contact me for their own personal link.
+There is a different link for each person. So, please don't share the 
+link above with anyone else, but encourage others to visit your page at
+http://wrmyers68.com/#/#{gid} and contact me for their own personal link.
 
 Many thanks and best wishes,
 Bruce>>
