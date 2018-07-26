@@ -3,7 +3,7 @@ ruleset com.bruceatbyu.graduands_collection {
     use module io.picolabs.wrangler alias wrangler
     provides grads
     shares __testing, import, graduands_page, grad_page, pageCounts
-    , Tx, all_comments
+    , Tx, all_comments, latest
   }
   // ent:graduands is a map of maps keyed by grad id ex. "g266"
   // each map has keys as follows
@@ -22,10 +22,17 @@ ruleset com.bruceatbyu.graduands_collection {
                  , { "name": "pageCounts" }
                  , { "name": "Tx", "args": [ "grad" ] }
                  , { "name": "all_comments", "args": [ "grad" ] }
+                 , { "name": "latest" }
                  ]
     ,
-      "events": [ //{ "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
+      "events": [ { "domain": "graduands", "type": "need_hall_of_fame" }
+                //,{ "domain": "graduands_collection", "type": "csv_available", "attrs": [ "url" ] }
                 ]
+    }
+    latest = function(){
+      ent:graduands.values()
+        .filter(function(v){v{"rt"}})
+        .sort(function(a,b){b{"rt"} cmp a{"rt"}})
     }
     grads = function(){
       ent:graduands
@@ -177,6 +184,17 @@ ruleset com.bruceatbyu.graduands_collection {
     if ent:graduands >< to then noop();
     fired {
       ent:graduands{[to,"rt"]} := time;
+    }
+  }
+  rule report_hall_of_fame {
+    select when graduands need_hall_of_fame
+    foreach ent:graduands.filter(function(v){v{"hf"}}) setting(v,k)
+    every {
+      event:send({"eci":v{"Tx"}, "eid": "has_hall_of_fame",
+        "domain": "grad", "type": "has_hall_of_fame",
+        "attrs": {"grad": k, "hf": v{"hf"}}
+      });
+      send_directive("hall of fame",{}.put(k,v{"hf"}))
     }
   }
 }

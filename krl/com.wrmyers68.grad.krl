@@ -2,15 +2,21 @@ ruleset com.wrmyers68.grad {
   meta {
     use module com.wrmyers68.profile alias profile
     use module com.wrmyers68.comments alias comments
-    shares __testing, grad_page
+    shares __testing, grad_page, hall_of_fame
   }
   global {
     __testing = {
       "queries": [ { "name": "__testing" }
+                 , { "name": "hall_of_fame" }
                  ],
       "events": [ {"domain":"grad","type":"init", "attrs":["id","name"]}
                 , {"domain":"grad","type":"new_graduands_wellKnown_Tx","attrs":["Tx"]}
                 ]
+    }
+    hall_of_fame = function(){
+      ent:hf.isnull() => ""
+                       | <<<p class="hf">#{ent:hf.join(", ")}</p>
+>>
     }
     commentHTML = function(comment){
       date = comment{"date"};
@@ -81,7 +87,9 @@ reported by #{comment{"from"}},
 <script type="text/javascript" src="http://wrmyers68.com/grad.js"></script>
 </head>
 <body>
+<div id="hf_container">
 <h1>#{name}</h1>
+#{hall_of_fame()}</div>
 <fieldset>
 <legend>
 from DAWN '68, p. #{id.substr(0,2)},
@@ -142,5 +150,12 @@ from DAWN '68, p. #{id.substr(0,2)},
       "grad_did": meta:eci,
       "grad_name": profile:preferredName() || ent:name
     })
+  }
+  rule record_hall_of_fame {
+    select when grad has_hall_of_fame grad re#^(g\d{3})$# setting (grad)
+    if grad == ent:id then noop();
+    fired {
+      ent:hf := event:attr("hf");
+    }
   }
 }
