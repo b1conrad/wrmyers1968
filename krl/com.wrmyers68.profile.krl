@@ -57,6 +57,9 @@ ruleset com.wrmyers68.profile {
     if id == ent:id then noop();
     fired {
       ent:preferredName := clear_HTML(event:attr("name"),60);
+      raise comments event "comment_recorded" attributes {
+        "id": id, "to": id, "date": time:now()
+      }
     }
   }
 }
