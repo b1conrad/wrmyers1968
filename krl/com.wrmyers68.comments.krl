@@ -28,6 +28,23 @@ ruleset com.wrmyers68.comments {
       ent:reports := [];
     }
   }
+  rule record_edited_comment {
+    select when comments edited
+      date re#^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[.]\d{3}Z)$# setting(date)
+    pre {
+      index = ent:reports.map(function(v){v{"date"}}).index(date);
+      old_rprt = ent:reports[index];
+      old_text = old_rprt{"text"};
+      new_text = event:attr("text");
+      new_rprt = old_rprt.put({"edited":time:now(),"text":new_text});
+    }
+    if old_text && old_text != new_text then noop()
+    fired {
+      ent:reports := ent:reports.splice(index,1,new_rprt);
+      raise comments event "report_edited"
+        attributes ({"index":index,"report":new_rprt})
+    }
+  }
   rule record_new_comment {
     select when comments new
     pre {

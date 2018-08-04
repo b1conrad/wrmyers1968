@@ -18,6 +18,12 @@ ruleset com.wrmyers68.grad {
                        | <<<p class="hf">#{ent:hf.join(", ")}</p>
 >>
     }
+    editedComment = function(comment){
+      edited = comment{"edited"};
+      edited.isnull() => ""
+                       | <<<span style="color:silver" title="#{edited}">edited</span>
+>>
+    }
     commentHTML = function(comment){
       date = comment{"date"};
       <<<fieldset>
@@ -26,8 +32,8 @@ reported by #{comment{"from"}},
 <span title="#{date}">
 <script type="text/javascript">document.write(humanized_time_span("#{date}"))</script>
 </span>
-</legend>
-#{comment{"text"}}
+#{editedComment(comment)}</legend>
+<div class="report">#{comment{"text"}}</div>
 </fieldset>
 >>
     }
