@@ -10,6 +10,7 @@ RewriteRule "^(42[1-4][1-4])/?$" "/cgi-bin/wrmyers68-post.cgi?id=$1" [NC,L]
 RewriteRule "^(43[1-4][1-4])/?$" "/cgi-bin/wrmyers68-under.cgi?id=$1" [NC,L]
 RewriteRule "^grad.css$" "/wrmyers68/grad.css" [NC,L]
 RewriteRule "^humanized_time_span.js$" "/wrmyers68/humanized_time_span.js" [NC,L]
+RewriteRule "^cornfest/(.*)" "/wrmyers68/cornfest/$1" [NC,L]
 
 Header merge Cache-Control must-revalidate
 
