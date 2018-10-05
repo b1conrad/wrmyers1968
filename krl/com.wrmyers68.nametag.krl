@@ -17,15 +17,20 @@ ruleset com.wrmyers68.nametag {
       gid = profile:id();
       id = gid.substr(1);
       name = ent:name || profile:preferredName();
-      <<<h1>#{name}</h1>
-<div style="position:relative;width:3.75in">
-<fieldset style="width:3.5in">
+      sized_name = name.length() <= 23 => name
+        | name.extract(re#([^ ]*) (.*)#)
+          .join(<<<span style="font-size:80%"> >>) + "</span>";
+      <<<h1>#{sized_name}</h1>
+<div class="grad">
+<fieldset>
 <legend>
-<span style="color:#8a4651;font-size:80%">W. R. Myers class of 1968 50th reunion -- August 25, 2018</span>
+<span>W. R. Myers class of 1968 50th reunion -- August 25, 2018</span>
 </legend>
 <img src="#{imagesURI}/#{id}.png" width="254" height="175">
+<img src="#{imagesURI}/qr#{id}.png">
+<div class="qrcode"></div>
 </fieldset>
-<span style="font-size:80%;position:absolute;right:0">wrmyers68.com/#{id}</span>
+<span class="url">http://wrmyers68.com/#{id}</span>
 </div>
 >>
     }
