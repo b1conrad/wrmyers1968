@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+<p>
+Redirecting you to <span id="url"></span> ...
+</p>
+<script>
+const dest = window.location.hash.substr(1);
+document.getElementById('url').innerHTML = '<a href="'+dest+'">'+dest+'</a>';
+if (dest.length) {
+  setTimeout('window.location.href=dest',100);
+}
+</script>
+  </body>
+</html>
